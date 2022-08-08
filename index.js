@@ -10,12 +10,24 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Welcome to my Scrapper API.");
 });
-// product details
+// GET product details
 app.get("/products/:productId", async (req, res) => {
   const { productId } = req.params;
   try {
     const response = await request(
       `${baseUrl}&url=https://www.amazon.com/dp/${productId}`
+    );
+    res.json(JSON.parse(response));
+  } catch (error) {
+    res.json(error);
+  }
+});
+// GET product REVIEWS
+app.get("/products/:productId/reviews", async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const response = await request(
+      `${baseUrl}&url=https://www.amazon.com/product-reviews/${productId}`
     );
     res.json(JSON.parse(response));
   } catch (error) {
